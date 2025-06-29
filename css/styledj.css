@@ -1,0 +1,77 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+}
+
+#song-list {
+  max-width: 600px;
+  margin: 0 auto;
+  list-style: none;
+  padding: 0;
+}
+
+.song-item {
+  background: rgba(255 255 255 / 0.1);
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem; /* Texto más grande */
+}
+
+.song-item a {
+  color: #ffd700;
+  text-decoration: none;
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+.song-item a:hover {
+  text-decoration: underline;
+}
+
+.delete-btn {
+  background: #ff4c4c;
+  border: none;
+  padding: 6px 10px; /* Botón más pequeño */
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  font-size: 0.9rem; /* Ajusta tamaño de texto en el botón */
+}
+
+.delete-btn:hover {
+  background: #e03b3b;
+}
+
+@media (max-width: 480px) {
+  .song-item {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1rem;
+  }
+
+  .delete-btn {
+    margin-top: 10px;
+    width: 100%;
+  }
+}

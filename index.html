@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Sugerencias</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <h1>Sugiere una canción</h1>
+  <form id="request-form">
+    <input type="text" id="nombre_cancion" placeholder="Nombre de la canción" required><br><br>
+    <input type="text" id="artista" placeholder="Artista" required><br><br>
+    <input type="url" id="link" placeholder="Link (YouTube, Spotify) - Opcional"><br><br>
+    <button type="submit">Enviar</button>
+  </form>
+  <p id="status"></p>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+    const supabaseUrl = 'https://qsrdwuisrkiooujwweku.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcmR3dWlzcmtpb291and3ZWt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExNjI4NjMsImV4cCI6MjA2NjczODg2M30.Dpdbhs5ABsSZjXMw9IAAHYAg-oUaPNmip3w-4Hz8vwk'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const form = document.getElementById('request-form')
+    const status = document.getElementById('status')
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const song = document.getElementById('nombre_cancion').value
+      const artist = document.getElementById('artista').value
+      const link = document.getElementById('link').value
+
+      console.log({
+        nombre_cancion: song,
+        artista: artist,
+        link: link || null
+      })
+
+      const { error } = await supabase.from('requests').insert([{
+        nombre_cancion: song,
+        artista: artist,
+        link: link || null
+      }])
+
+      if (error) {
+        console.error(error)
+        status.textContent = '❌ Error al enviar sugerencia'
+      } else {
+        status.textContent = '✅ ¡Gracias por tu sugerencia!'
+        form.reset()
+      }
+    })
+  </script>
+</body>
+
+</html>
+
+
+
+

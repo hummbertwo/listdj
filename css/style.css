@@ -1,0 +1,139 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body y html para centrar */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  display: flex;
+  flex-direction: column;  /* para titulo arriba, form abajo */
+  justify-content: center; /* centrar vertical */
+  align-items: center;     /* centrar horizontal */
+  padding: 20px;
+  text-align: center;      /* para que el h1 quede centrado */
+}
+
+/* Titulo centrado y con margen */
+h1 {
+  font-weight: 700;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 700px; /* Más ancho para pantallas grandes */
+}
+
+/* Formulario centrado y responsivo */
+form {
+  background: rgba(255 255 255 / 0.12);
+  padding: 35px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+  width: 100%;
+  max-width: 600px; /* Máximo ancho aumentado */
+  box-sizing: border-box;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="url"] {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255 255 255 / 0.35);
+  color: #fff;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  outline-offset: 2px;
+  outline-color: transparent;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus {
+  background: rgba(255 255 255 / 0.55);
+  box-shadow: 0 0 12px #ffd700;
+  outline-color: #ffd700;
+}
+
+/* Botón */
+button {
+  width: 100%;
+  padding: 16px 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  background: #ffd700;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgb(255 215 0 / 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+button:hover,
+button:focus {
+  background: #e6c200;
+  box-shadow: 0 10px 22px rgb(230 194 0 / 0.9);
+}
+
+button:active {
+  background: #bfa100;
+  box-shadow: 0 5px 10px rgb(191 161 0 / 0.9);
+  transform: translateY(1px);
+}
+
+/* Mensaje de estado */
+#status {
+  margin-top: 18px;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  h1 {
+    font-size: 1.9rem;
+    max-width: 100%;
+  }
+
+  form {
+    max-width: 100%;
+    padding: 30px 20px;
+  }
+
+  input[type="text"],
+  input[type="url"] {
+    font-size: 1rem;
+    padding: 12px 15px;
+  }
+
+  button {
+    font-size: 1.1rem;
+    padding: 14px 0;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  input[type="text"],
+  input[type="url"] {
+    font-size: 0.95rem;
+  }
+
+  button {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Sugerencias</title>
+  <link rel="stylesheet" href="./css/styledj.css" />
+</head>
+<body>
+  <h1>Sugerencias en tiempo real</h1>
+  <ul id="song-list"></ul>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+    const supabaseUrl = 'https://qsrdwuisrkiooujwweku.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcmR3dWlzcmtpb291and3ZWt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExNjI4NjMsImV4cCI6MjA2NjczODg2M30.Dpdbhs5ABsSZjXMw9IAAHYAg-oUaPNmip3w-4Hz8vwk'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const list = document.getElementById('song-list')
+
+    // Función para eliminar canción por id
+    async function deleteSong(id, liElement) {
+      const { error } = await supabase
+        .from('requests')
+        .delete()
+        .eq('id', id)
+
+      if (error) {
+        console.error('Error al eliminar:', error)
+        alert('No se pudo eliminar la canción. Intenta de nuevo.')
+      } else {
+        // Eliminar elemento del DOM
+        liElement.remove()
+      }
+    }
+
+    // Renderizar una canción individual con botón eliminar
+    function renderSong(song) {
+      const li = document.createElement('li')
+      li.className = 'song-item'
+      li.innerHTML = `
+        🎵 <strong>${song.nombre_cancion}</strong> – ${song.artista}
+        ${song.link ? ` | <a href="${song.link}" target="_blank" rel="noopener noreferrer">🔗 Link</a>` : ''}
+        <button class="delete-btn" title="Eliminar esta sugerencia">Eliminar</button>
+      `
+
+      const btn = li.querySelector('.delete-btn')
+      btn.addEventListener('click', () => deleteSong(song.id, li))
+
+      list.appendChild(li)
+    }
+
+    // Cargar la lista inicial
+    async function fetchSongs() {
+      const { data, error } = await supabase
+        .from('requests')
+        .select('*')
+        .order('created_at', { ascending: true })
+
+      if (error) {
+        console.error('Error al cargar canciones:', error)
+        return
+      }
+
+      list.innerHTML = ''
+      data.forEach(renderSong)
+    }
+
+    // Iniciar con la lista existente
+    fetchSongs()
+
+    // Suscribirse a nuevos inserts
+    supabase
+      .channel('realtime-requests')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'requests'
+      }, payload => {
+        console.log('🆕 Nueva canción sugerida:', payload.new)
+        renderSong(payload.new) // Agrega solo la nueva canción
+      })
+      .on('postgres_changes', {
+        event: 'DELETE',
+        schema: 'public',
+        table: 'requests'
+      }, payload => {
+        console.log('🗑 Canción eliminada:', payload.old)
+        // Opcional: eliminar también del DOM si quieres que borre sin recargar
+        const items = document.querySelectorAll('.song-item')
+        items.forEach(item => {
+          if (item.textContent.includes(payload.old.nombre_cancion)) {
+            item.remove()
+          }
+        })
+      })
+      .subscribe()
+  </script>
+</body>
+</html>
